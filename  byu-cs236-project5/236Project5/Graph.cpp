@@ -4,6 +4,9 @@
 Graph::Graph(void){}
 Graph::~Graph(void){}
 
+Graph::Graph(std::string n, std::vector<Rule> r){
+}
+
 void Graph::createGraph(){
 }
 
