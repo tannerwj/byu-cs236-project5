@@ -67,6 +67,7 @@
     <ClInclude Include="Domain.h" />
     <ClInclude Include="Fact.h" />
     <ClInclude Include="FactList.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Lex.h" />
     <ClInclude Include="Main.h" />
@@ -93,6 +94,7 @@
     <ClCompile Include="Domain.cpp" />
     <ClCompile Include="Fact.cpp" />
     <ClCompile Include="FactList.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Lex.cpp" />
     <ClCompile Include="Main.cpp" />
