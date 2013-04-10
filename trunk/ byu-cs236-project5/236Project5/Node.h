@@ -1,10 +1,13 @@
 #pragma once
-#include <vector>
+#include <set>
 class Node
 {
 
 private:
-	std::vector<Node> dependsOn;
+	std::set<std::string> myChrldren;
+	bool visited;
+	int postorder;
+
 public:
 	Node(void);
 	~Node(void);

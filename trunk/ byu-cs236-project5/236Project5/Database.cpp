@@ -1,4 +1,5 @@
 #include "Database.h"
+#include "Graph.h"
 #include <iostream>
 
 
@@ -22,30 +23,31 @@ Database::Database(std::vector<Scheme> s, std::vector<Fact> f, std::vector<Rule>
 	for ( factIter = f.begin(); factIter < f.end(); factIter++)
 		database[factIter->getName()].addTuple(*factIter);
 
-	do {
-		ruleCounter++;
-		addedSomething = false;
+	//do {
+	//	ruleCounter++;
+	//	addedSomething = false;
 
-		for ( ruleIter = r.begin(); ruleIter < r.end(); ruleIter++) {
-			if(ProcessRule(*ruleIter))
-				addedSomething = true;
-		}
-	} while (addedSomething);
+	//	for ( ruleIter = r.begin(); ruleIter < r.end(); ruleIter++) {
+	//		if(ProcessRule(*ruleIter))
+	//			addedSomething = true;
+	//	}
+	//} while (addedSomething);
 
-	std::cout << "Schemes populated after " << ruleCounter << " passes through the Rules.\n";
+	//std::cout << "Schemes populated after " << ruleCounter << " passes through the Rules.\n";
 
 	
 	for ( queryIter = q.begin(); queryIter < q.end(); queryIter++)
-		ProcessQuery(*queryIter);
+		ProcessQuery(*queryIter, r);
 
 }
 
-void Database::ProcessQuery(Query q){
+void Database::ProcessQuery(Query q, std::vector<Rule> rules){
 
 	std::vector<Token> ProjectTokens;
 	std::vector<Tuple> SelectTuples;
 	std::vector<Token> queryTokens = q.getAttributes();
 	Relation r = Relation(database[q.getName()].Rename(q.getAttributes()));
+	Graph dependsOn = Graph(q.getName(), rules);
 	
 
 	std::vector<Token>::iterator it;

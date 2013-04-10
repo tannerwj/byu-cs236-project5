@@ -13,7 +13,7 @@ public:
 	Database(void);
 	~Database(void);
 	Database(std::vector<Scheme>, std::vector<Fact>, std::vector<Rule> , std::vector<Query>);
-	void ProcessQuery(Query);
+	void ProcessQuery(Query, std::vector<Rule>);
 	bool ProcessRule(Rule);
 	Relation ProcessPredicate(std::string, std::vector<Token>);
 	std::string toString();
