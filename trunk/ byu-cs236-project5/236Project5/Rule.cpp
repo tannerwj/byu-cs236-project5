@@ -93,7 +93,21 @@ std::vector<std::vector<Token>> Rule::getPredicatesAttributes(){
 }
 
 std::string Rule::toString(){
-	return RuleString;
+	std::string temp = headPredicate.toString() + " :- ";
+
+	for(int i = 0; i < getPredicateNames().size(); i++){
+		if(i > 0)
+				temp += ",";
+		temp += getPredicateNames().at(i) + "(";
+		for(int j = 0; j < getPredicatesAttributes().at(i).size(); j++){
+			if(j > 0)
+				temp += ",";
+
+			temp +=  getPredicatesAttributes().at(i).at(j).getTokensValue();
+		}
+		temp += ")";
+	}
+	return temp + ".";
 }
 void Rule::failure(Token* t){
 	std::cout << "Failure!\n  " + t->toString();

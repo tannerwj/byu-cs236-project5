@@ -15,7 +15,7 @@ public:
 	~Graph(void);
 	Graph(std::string, std::vector<Rule>);
 
-	void createGraph();
+	void createGraph(std::vector<Rule>);
 	void buildDFStree();
 	void findCycles();
 	void sortGraph();
