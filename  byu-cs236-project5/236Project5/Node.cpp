@@ -2,8 +2,8 @@
 
 
 Node::Node(void){
-	bool visited = false;
-	int postorder = 0;
+	visited = false;
+	postorder = 0;
 }
 Node::~Node(void){}
 
@@ -17,6 +17,10 @@ void Node::setVisited(){
 
 bool Node::isVisited(){
 	return visited;
+}
+
+std::vector<std::string> Node::getChildren(){
+	return myChildren;
 }
 
 std::string Node::toString(){
