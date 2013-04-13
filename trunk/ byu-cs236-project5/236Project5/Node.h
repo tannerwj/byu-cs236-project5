@@ -14,6 +14,7 @@ public:
 	void addChild(std::string);
 	void setVisited();
 	bool isVisited();
+	std::vector<std::string> getChildren();
 	std::string toString();
 };
 

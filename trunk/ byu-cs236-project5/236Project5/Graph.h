@@ -3,12 +3,14 @@
 #include "Rule.h"
 #include <map>
 #include <vector>
+#include <queue>
 
 class Graph
 {
 
 private:
 	std::map<std::string, Node> graph;
+	std::queue<std::string> DFSTree;
 
 public:
 	Graph(void);
@@ -16,7 +18,8 @@ public:
 	Graph(std::string, std::vector<Rule>);
 
 	void createGraph(std::vector<Rule>);
-	void buildDFStree();
+	void buildDFStree(std::string);
+	//void postOrder(std::string);
 	void findCycles();
 	void sortGraph();
 	void makeList();
