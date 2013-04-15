@@ -4,25 +4,33 @@
 #include <map>
 #include <vector>
 #include <queue>
+#include <utility>
+
+typedef std::pair<std::string,std::string>	Cycle;
+typedef std::vector<Cycle>					Cycles;
 
 class Graph
 {
 
 private:
-	std::map<std::string, Node> graph;
-	std::queue<std::string> DFSTree;
+	std::map	<std::string, Node>		graph;
+	std::vector	<std::string>			DFSTree;
+	Cycles								myCycles;
+
+	void createGraph(std::vector<Rule>);
+	void buildDFStree(std::string);
+	void findCycles(std::string);
+	void consolidateCycles();
+	void printCycles();
+	void sortGraph();
 
 public:
 	Graph(void);
 	~Graph(void);
 	Graph(std::string, std::vector<Rule>);
 
-	void createGraph(std::vector<Rule>);
-	void buildDFStree(std::string);
-	//void postOrder(std::string);
-	void findCycles();
-	void sortGraph();
-	void makeList();
+	std::vector<std::string> makeList();
+	Cycles getCycles();
 
 	/*
 	(1) create the depends-on graph, 

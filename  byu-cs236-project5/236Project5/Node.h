@@ -12,8 +12,10 @@ public:
 	Node(void);
 	~Node(void);
 	void addChild(std::string);
-	void setVisited();
+	void setVisited(bool);
 	bool isVisited();
+	void setPostOrder(int);
+	int getPostOrder();
 	std::vector<std::string> getChildren();
 	std::string toString();
 };
