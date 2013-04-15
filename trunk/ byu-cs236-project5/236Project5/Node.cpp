@@ -11,12 +11,20 @@ void Node::addChild(std::string s){
 	myChildren.push_back(s);
 }
 
-void Node::setVisited(){
-	visited = true;
+void Node::setVisited(bool value){
+	visited = value;
 }
 
 bool Node::isVisited(){
 	return visited;
+}
+
+void Node::setPostOrder(int n){
+	postorder = n;
+}
+
+int Node::getPostOrder(){
+	return postorder;
 }
 
 std::vector<std::string> Node::getChildren(){

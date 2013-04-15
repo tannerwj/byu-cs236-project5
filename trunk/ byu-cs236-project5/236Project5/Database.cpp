@@ -11,11 +11,8 @@ Database::Database(std::vector<Scheme> s, std::vector<Fact> f, std::vector<Rule>
 
 	std::vector<Scheme>::iterator it;
 	std::vector<Fact>::iterator factIter;
-	std::vector<Rule>::iterator ruleIter;
 	std::vector<Query>::iterator queryIter;
-	bool addedSomething;
-	int ruleCounter = 0;		// Counts how many passes through the rules it takes to populate the databases
-
+	myRules = r;
 	
     for ( it = s.begin() ; it < s.end(); it++ )
 		database[it->getName()] = Relation(it->getName(), it->getAttributes());
@@ -23,18 +20,7 @@ Database::Database(std::vector<Scheme> s, std::vector<Fact> f, std::vector<Rule>
 	for ( factIter = f.begin(); factIter < f.end(); factIter++)
 		database[factIter->getName()].addTuple(*factIter);
 
-	//do {
-	//	ruleCounter++;
-	//	addedSomething = false;
-
-	//	for ( ruleIter = r.begin(); ruleIter < r.end(); ruleIter++) {
-	//		if(ProcessRule(*ruleIter))
-	//			addedSomething = true;
-	//	}
-	//} while (addedSomething);
-
-	//std::cout << "Schemes populated after " << ruleCounter << " passes through the Rules.\n";
-
+	//ProcessRules(r);
 	
 	for ( queryIter = q.begin(); queryIter < q.end(); queryIter++)
 		ProcessQuery(*queryIter, r);
@@ -46,20 +32,59 @@ void Database::ProcessQuery(Query q, std::vector<Rule> rules){
 	std::vector<Token> ProjectTokens;
 	std::vector<Tuple> SelectTuples;
 	std::vector<Token> queryTokens = q.getAttributes();
-	Relation r = Relation(database[q.getName()].Rename(q.getAttributes()));
 	Graph dependsOn = Graph(q.getName(), rules);
-	
 
+	std::vector<std::string> ruleList = dependsOn.makeList();
+	Cycles optimizedCycles = dependsOn.getCycles();
+	Cycle activeCycle;
+	bool isInaCycle = false;
+	bool shouldProcessRules = false;
+	std::vector<Rule> ruleVector;
+
+	for (int i = 0; i < ruleList.size(); i++){
+
+		std::vector <Rule> rulebyID = getRulebyID(ruleList.at(i));
+			for(int k = 0; k < rulebyID.size(); k++)
+				ruleVector.push_back(rulebyID.at(k));
+
+		if(!isInaCycle){
+			for (int j = 0; j < optimizedCycles.size(); j++) {
+				if (ruleList.at(i) == optimizedCycles.at(j).first){
+					isInaCycle = true;
+					activeCycle =  optimizedCycles.at(j);
+
+				}
+			}
+
+			if(!isInaCycle){
+				shouldProcessRules = true;
+			}
+
+		} else {
+
+			if(ruleList.at(i) == activeCycle.second){
+				shouldProcessRules = true;
+			}
+		}
+
+		if(shouldProcessRules || i == ruleList.size() - 1){
+			ProcessRules(ruleVector);
+			ruleVector.clear();
+			isInaCycle = false;
+			shouldProcessRules = false;
+		}
+
+	}
+	
+	Relation r = Relation(database[q.getName()].Rename(q.getAttributes()));
 	std::vector<Token>::iterator it;
-	//int counter = 0;
+
 	for(it = queryTokens.begin(); it < queryTokens.end(); it++){
 
 		if(it->getTokenType() == STRING)
 			SelectTuples.push_back(Tuple(r.getSchema(), q.getAttributes()));
 		else 
 			ProjectTokens.push_back(*it);
-
-		//counter++;
 	}
 
 	for(int i = 0; i < SelectTuples.size(); i++)
@@ -95,13 +120,27 @@ bool Database::ProcessRule(Rule r){
 
 }
 
+void Database::ProcessRules(std::vector<Rule> r){
+
+	std::vector<Rule>::iterator ruleIter;
+	bool addedSomething;
+
+	do {
+		addedSomething = false;
+
+		for ( ruleIter = r.begin(); ruleIter < r.end(); ruleIter++) {
+			if(ProcessRule(*ruleIter))
+				addedSomething = true;
+		}
+	} while (addedSomething);
+}
+
 Relation Database::ProcessPredicate(std::string name, std::vector<Token> attributes){
 	std::vector<Token> ProjectTokens;
 	std::vector<Tuple> SelectTuples;
 	Relation r = Relation(database[name].Rename(attributes));
 	std::vector<Token>::iterator it;
 
-	//int counter = 0;
 	for(it = attributes.begin(); it < attributes.end(); it++){
 
 		if(it->getTokenType() == STRING)
@@ -109,7 +148,6 @@ Relation Database::ProcessPredicate(std::string name, std::vector<Token> attribu
 		else
 			ProjectTokens.push_back(*it);
 
-		//counter++;
 	}
 
 	for(int i = 0; i < SelectTuples.size(); i++)
@@ -120,6 +158,16 @@ Relation Database::ProcessPredicate(std::string name, std::vector<Token> attribu
 
 	return r;
 
+}
+
+std::vector <Rule>  Database::getRulebyID(std::string s){
+	std::vector<Rule> temp;
+	for(int i = 0; i < myRules.size(); i++){
+		if(s == myRules.at(i).getHead().getName())
+			temp.push_back(myRules.at(i));
+	}
+
+	return temp;
 }
 
 
