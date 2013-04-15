@@ -99,7 +99,7 @@ std::vector<Token> Predicate::getAttributes(){
 std::vector<std::string> Predicate::getPredicateNames(){
 	return predicateNames;
 }
-std::vector<std::vector<Token>> Predicate::getPredicateAttributes(){
+std::vector<std::vector<Token> > Predicate::getPredicateAttributes(){
 	return predicateAttributes;
 }
 

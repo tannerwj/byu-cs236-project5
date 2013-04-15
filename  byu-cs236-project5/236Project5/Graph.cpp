@@ -121,7 +121,7 @@ void Graph::consolidateCycles(){
 }
 
 void Graph::printCycles(){
-	std::vector<std::pair<std::string,std::string>>::iterator cycleIter;
+	std::vector<std::pair<std::string,std::string> >::iterator cycleIter;
 	std::cout << "<---Backward Edges--->\n";
 
 	for(cycleIter = myCycles.begin(); cycleIter < myCycles.end(); cycleIter++)

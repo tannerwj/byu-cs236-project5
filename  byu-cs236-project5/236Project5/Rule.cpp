@@ -88,7 +88,7 @@ std::vector<std::string> Rule::getPredicateNames(){
 	return predicateList.getPredicateNames();
 }
 
-std::vector<std::vector<Token>> Rule::getPredicatesAttributes(){
+std::vector<std::vector<Token> > Rule::getPredicatesAttributes(){
 	return predicateList.getPredicateAttributes();
 }
 

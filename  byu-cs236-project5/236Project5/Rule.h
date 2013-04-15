@@ -21,7 +21,7 @@ public:
 	std::string getPredicateList(std::stack<Token*>*);
 	Predicate getHead();
 	std::vector<std::string> getPredicateNames();
-	std::vector<std::vector<Token>> getPredicatesAttributes();
+	std::vector<std::vector<Token> > getPredicatesAttributes();
 	std::string toString();
 private:
 	std::string RuleString;
