@@ -7,8 +7,8 @@ Node::Node(void){
 }
 Node::~Node(void){}
 
-void Node::addChild(std::string s){
-	myChildren.push_back(s);
+void Node::addChild(std::string str){
+	myChildren.push_back(str);
 }
 
 void Node::setVisited(bool value){
